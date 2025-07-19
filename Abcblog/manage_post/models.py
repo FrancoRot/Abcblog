@@ -6,7 +6,7 @@ User= get_user_model ()
 #categoria
 class Category(models.Model):
     name = models.CharField(max_length=20)
-    image = models.ImageField(blank=False, null=True)
+    image = models.ImageField(upload_to="Categories"  , blank=False, null=True)
     slug = models.SlugField(unique=True, max_length=40)
     featured = models.BooleanField(default=False)
     created= models.DateTimeField(auto_now_add=True)
@@ -18,7 +18,7 @@ class Category(models.Model):
     
     class Meta:
         verbose_name = 'Category'
-        verbose_name_plural = 'Categorias'
+        verbose_name_plural = "Categories"
    
 
 #articulo
@@ -26,7 +26,7 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, max_length=255)
     introduction = models.TextField(max_length=500)
-    image = models.ImageField()
+    image = models.ImageField(upload_to="Articles", blank=False, null=False)
     body = models.TextField()
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     categories = models.ManyToManyField(Category)
