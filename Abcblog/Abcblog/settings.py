@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&f__ub_(r@zq3$!ey^!u!si46kbdx(de52z1u1npaq$u9&u^48'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -142,3 +143,23 @@ MEDIA_ROOT = BASE_DIR / "media"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+###CONFIGURACION DE email
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_HOST = config('EMAIL_HOST')
+#EMAIL_PORT = config('EMAIL_PORT', cast=int)
+#EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+#EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+#EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
+# settings.py
+EMAIL_BACKEND      = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST         = config('EMAIL_HOST')
+EMAIL_PORT         = config('EMAIL_PORT', cast=int)               # 465 = SMTPS
+EMAIL_USE_SSL      = config('EMAIL_USE_SSL', cast=bool)              # Implicit TLS (SSL)
+EMAIL_USE_TLS      = config('EMAIL_USE_TLS', cast=bool)             # STARTTLS desactivado
+EMAIL_HOST_USER    = config('EMAIL_HOST_USER')  # ¡usa variable de entorno!
+EMAIL_HOST_PASSWORD= config('EMAIL_HOST_PASSWORD')    # idem
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_TIMEOUT      = 30                 # opcional: segundos
