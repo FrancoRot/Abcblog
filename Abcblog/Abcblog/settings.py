@@ -59,7 +59,7 @@ ROOT_URLCONF = 'Abcblog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,12 +126,13 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIR = [
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
     'manage_post/static',
     'user/static', 
 ]
-#unicacion de los archivos estaticos
-STATIC_ROOT = BASE_DIR / 'static'
+#ubicacion de los archivos estaticos
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 #url para archivos media
 MEDIA_URL = "/media/"

@@ -1,0 +1,135 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}ABCBlog - Tu portal de noticias y artículos{% endblock title %}
+
+{% block css %}
+<link href="{% static 'css/index.css' %}" rel="stylesheet" type="text/css"/>
+{% endblock css %}
+
+{% block content %}
+<!-- Hero Section -->
+{% if featured_article %}
+<section class="hero-section">
+    <div class="hero-container">
+        <div class="hero-image">
+            <img src="{{ featured_article.image.url }}" alt="{{ featured_article.title }}">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-category">
+                {% for category in featured_article.categories.all %}
+                    <span class="category-tag">{{ category.name }}</span>
+                {% endfor %}
+            </div>
+            <h1 class="hero-title">{{ featured_article.title }}</h1>
+            <p class="hero-description">{{ featured_article.introduction|truncatewords:25 }}</p>
+            <div class="hero-meta">
+                <span class="author">Por {{ featured_article.user_id.full_name }}</span>
+                <span class="date">{{ featured_article.created|date:"d M Y" }}</span>
+            </div>
+            <a href="#" class="hero-btn">Leer artículo</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Categories Section -->
+{% if featured_categories %}
+<section class="categories-section">
+    <div class="container">
+        <h2 class="section-title">Categorías Destacadas</h2>
+        <div class="categories-grid">
+            {% for category in featured_categories %}
+            <div class="category-card">
+                <div class="category-image">
+                    {% if category.image %}
+                        <img src="{{ category.image.url }}" alt="{{ category.name }}">
+                    {% else %}
+                        <div class="category-placeholder">{{ category.name|first }}</div>
+                    {% endif %}
+                </div>
+                <h3 class="category-name">{{ category.name }}</h3>
+                <a href="#" class="category-link">Ver artículos</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Recent Articles Section -->
+<section class="articles-section">
+    <div class="container">
+        <div class="content-wrapper">
+            <!-- Main Content -->
+            <main class="main-content">
+                <h2 class="section-title">Artículos Recientes</h2>
+                {% if recent_articles %}
+                <div class="articles-grid">
+                    {% for article in recent_articles %}
+                    <article class="article-card">
+                        <div class="article-image">
+                            <img src="{{ article.image.url }}" alt="{{ article.title }}" loading="lazy">
+                            <div class="article-categories">
+                                {% for category in article.categories.all|slice:":2" %}
+                                    <span class="category-tag">{{ category.name }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="#">{{ article.title }}</a>
+                            </h3>
+                            <p class="article-excerpt">{{ article.introduction|truncatewords:20 }}</p>
+                            <div class="article-meta">
+                                <div class="author-info">
+                                    <span class="author-name">{{ article.user_id.full_name }}</span>
+                                </div>
+                                <span class="article-date">{{ article.created|date:"d M Y" }}</span>
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="no-articles">
+                    <h3>No hay artículos disponibles</h3>
+                    <p>Pronto publicaremos contenido interesante para ti.</p>
+                </div>
+                {% endif %}
+            </main>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <!-- Categories Widget -->
+                {% if all_categories %}
+                <div class="widget">
+                    <h3 class="widget-title">Categorías</h3>
+                    <ul class="category-list">
+                        {% for category in all_categories %}
+                        <li>
+                            <a href="#" class="category-item">
+                                {{ category.name }}
+                                <span class="category-count">({{ category.article_set.count }})</span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- Newsletter Widget -->
+                <div class="widget newsletter-widget">
+                    <h3 class="widget-title">Suscríbete</h3>
+                    <p>Recibe las últimas noticias directamente en tu email</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Tu correo electrónico" required>
+                        <button type="submit">Suscribirse</button>
+                    </form>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock content %}
